@@ -1,11 +1,9 @@
-import { App, HttpRequest, HttpResponse, us_socket_local_port } from "uWebSockets.js";
+import { App, HttpResponse, us_socket_local_port } from "uWebSockets.js";
 import dotenv from "dotenv";
 import { connect } from "./config/database";
-import users from "./models/user";
 import Color from "./services/color";
-import jwt from "./helpers/jwt";
 import Auth from "./services/auth";
-import { object, string, InferType, ValidationError } from 'yup';
+import { object, string, ValidationError } from 'yup';
 import Workspace from "./services/workspace";
 import Comb from "./services/comb";
 
