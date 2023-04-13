@@ -10,7 +10,14 @@
 		let message: ClientEventMessage;
 
 		if (e.detail.comb) {
-			message = { token: data.token, action: 'join', data: e.detail };
+			message = {
+				token: data.token,
+				action: 'join',
+				data: {
+					...e.detail,
+					topic: data.workspace.id
+				}
+			};
 		} else {
 			message = {
 				token: data.token,

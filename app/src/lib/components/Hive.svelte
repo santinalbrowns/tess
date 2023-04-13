@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { cells } from '$lib/store';
+	import { cells, user } from '$lib/store';
 	import GridCell from './GridCell.svelte';
 	import { createEventDispatcher } from 'svelte';
 
@@ -115,26 +115,25 @@
 
 		if (participant) {
 			const connector = boundaries.find((cell) =>
-				boundaries.find((p) => cell.row === p?.row && cell.column === p.column)
+				$cells.find((p) => cell.row === p?.row && cell.column === p.column)
 			);
 
 			if (connector) {
-				const linker = boundaries.find(
-					(p) => p?.row === connector.row && p.column === connector.column
-				);
-
+				const linker = $cells.find(cell => cell.row == connector.row && cell.column == connector.column);
+				
 				if (linker) {
-					//linker.user.id !== $user.id
-					/* if (linker) {
-						dispatch('join', { host: linker.host, cell: { row, column } });
+					if (linker.user.id !== $user.id) {
+						dispatch('join', { comb: linker.comb.id, row: row, column: column });
 					} else {
-						dispatch('join', { host: undefined, cell: { row, column } });
-					} */
+						dispatch('join', { comb: undefined, row: row, column: column });
+					}
 				}
 			}
 		} else {
 			dispatch('join', { comb: undefined, row: row, column: column });
 		}
+
+		console.log(rooms().length)
 	};
 </script>
 

@@ -373,7 +373,6 @@ app.ws('/ws', {
                         }
                     };
 
-
                     ws.send(JSON.stringify(body));
 
                     break;
@@ -393,13 +392,29 @@ app.ws('/ws', {
 
                     let data: ServerEvent = {
                         action: 'joined',
-                        data: cell
+                        data: cell,
                     }
 
                     ws.publish(event.data.topic, JSON.stringify(data));
 
                     ws.send(JSON.stringify(data));
 
+                    break;
+                case "join":
+
+                    body = {
+                        action: 'joined',
+                        data: await honeyComb.join({
+                            combId: event.data.comb,
+                            row: event.data.row,
+                            column: event.data.column,
+                            userId: user.id
+                        })
+                    }
+
+                    ws.publish(event.data.topic, JSON.stringify(body));
+
+                    ws.send(JSON.stringify(body));
                     break;
 
                 default:
@@ -418,7 +433,7 @@ app.ws('/ws', {
     },
 
     close(ws, code, message) {
-
+        //console.log("user disconnected", code.toString())
     },
 })
 

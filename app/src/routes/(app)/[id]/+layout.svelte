@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { cells, socket } from '$lib/store';
+	import { cells, socket, user } from '$lib/store';
 	import { onMount } from 'svelte';
 	import type { LayoutData } from './$types';
 	import websocket from '$lib/socket';
@@ -7,6 +7,8 @@
 	export let data: LayoutData;
 
 	const ws = websocket(data.workspace.id, data.token);
+
+	user.set(data.user);
 
 	onMount(() => {
 		ws.onopen = (e) => {
@@ -40,7 +42,7 @@
 
 					break;
 				case 'error':
-					
+					console.log(message.data);
 					break;
 				default:
 					break;
