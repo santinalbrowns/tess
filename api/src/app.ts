@@ -98,6 +98,47 @@ app.post('/auth', (res, req) => {
         console.log('Invalid JSON or no data at all!');
     });
 })
+app.post('/auth/register', (res, req) => {
+
+    /* Note that you cannot read from req after returning from here */
+    let url = req.getUrl();
+
+    /* Read the body until done or error */
+    readJson(res, async (data) => {
+        const color = new Color();
+
+        const schema = object({
+            username: string().min(4).required(),
+            email: string().email().required(),
+            password: string().min(6).required()
+        });
+
+        try {
+            const body = await schema.validate(data);
+
+            const user = await auth.register(body.email, body.password, body.username);
+
+            res.writeHeader('content-type', 'application/json');
+
+            res.end(JSON.stringify(user));
+
+        } catch (error: any) {
+
+            if (error instanceof ValidationError) {
+                return res.writeStatus("400").end(error.message);
+            }
+
+            if (error instanceof Error) {
+                return res.writeStatus("401").end(error.message);
+            }
+
+            return res.writeStatus("500").end(error.message);
+        }
+    }, () => {
+        /* Request was prematurely aborted or invalid or missing, stop reading */
+        console.log('Invalid JSON or no data at all!');
+    });
+})
 
 app.get('/me', async (res, req) => {
 
@@ -253,6 +294,36 @@ app.put('/workspaces/:id', async (res, req) => {
         console.log('Invalid JSON or no data at all!');
     })
 });
+app.get('/join/:id', async (res, req) => {
+
+    const header = req.getHeader("authorization");
+
+    const id = req.getParameter(0);
+
+    res.onAborted(() => {
+        res.aborted = true;
+    });
+
+    try {
+        const user = await auth.user(header)
+
+        const space = new Workspace();
+
+        const workspace = await space.addMember({
+            user: user.id,
+            workspace: id,
+            role: "auth",
+        });
+
+        if (!res.aborted) {
+            res.writeHeader("content-type", "application/json");
+            res.end(JSON.stringify(workspace));
+        }
+
+    } catch (error: any) {
+        res.end(error.message);
+    }
+});
 
 app.ws('/ws', {
     compression: 0,
@@ -302,7 +373,7 @@ app.ws('/ws', {
                         }
                     };
 
-                    
+
                     ws.send(JSON.stringify(body));
 
                     break;

@@ -2,6 +2,7 @@ import users from "../models/user";
 import jwt from "../helpers/jwt";
 import * as bcrypt from 'bcrypt';
 import { HttpRequest } from "uWebSockets.js";
+import Color from "./color";
 
 
 class Auth {
@@ -27,6 +28,34 @@ class Auth {
         return { token };
     }
 
+    async register(email: string, password: string, username: string): Promise<{ token: string }> {
+
+        const result = await users.findOne({ email: email });
+
+        if (result) {
+            throw Error("user alraedy exists");
+        }
+
+        const salt = await bcrypt.genSalt(10);
+        const hash = await bcrypt.hash(password, salt);
+
+        const color = new Color();
+
+        const user = await users.create({
+            username: username,
+            email: email,
+            password: hash,
+            color: color.random
+        })
+
+        const token = jwt.sign(
+            { id: user.id },
+            { expiresIn: process.env.ATLT }
+        );
+
+        return { token };
+    }
+
     async user(header: string) {
 
         if (header) {
@@ -37,7 +66,7 @@ class Auth {
 
             const user = await users.findById(payload.id);
 
-            if(!user) {
+            if (!user) {
                 throw new Error('User not found');
             }
 
