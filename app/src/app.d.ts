@@ -25,13 +25,6 @@ declare global {
 		column: number;
 	}
 
-	interface User {
-		id: string;
-		username: string;
-		email: string;
-		color: string;
-	}
-
 	interface Participant {
 		id: string
 		user: User,
@@ -45,6 +38,40 @@ declare global {
 			column: number;
 		};
 	}
+
+	interface User {
+		id: string;
+        username: string;
+        email: string;
+        color: string;
+    }
+
+    interface Workspace {
+		id: string;
+        name: string;
+        color: string;
+    }
+
+    interface Member {
+		id: string;
+        user: ObjectId;
+        workspace: ObjectId;
+        role: string;
+    }
+
+	interface ClientEventMessage<T = any> {
+		token?: string;
+        action: ClientEventAction;
+        data: T;
+    }
+
+    interface ServerEventMessage<T = any> {
+        action: ServerEventAction;
+        data: T;
+    }
+
+	type ClientEventAction = "join" | "host" | "collaborate";
+    type ServerEventAction = "joined" | "error";
 }
 
 export { };

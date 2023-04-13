@@ -1,4 +1,5 @@
 import { writable, type Writable } from "svelte/store";
+import websocket from "./socket";
 
 export const participants: Writable<Array<Participant>> = writable<Array<Participant>>([
     {
@@ -29,7 +30,7 @@ export const participants: Writable<Array<Participant>> = writable<Array<Partici
         user: {
             id: "1",
             username: "Santinal",
-            color: "#1f8fce",
+            color: "#ff7e79",
             email: "santinal@gmail.com"
         },
         host: {
@@ -48,3 +49,5 @@ export const participants: Writable<Array<Participant>> = writable<Array<Partici
         }
     },
 ]);
+
+export const socket: Writable<WebSocket> = writable<WebSocket>(websocket());
