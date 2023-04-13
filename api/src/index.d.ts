@@ -21,6 +21,19 @@ declare global {
         role: string;
     }
 
+    interface Comb {
+        label?: string;
+        user: ObjectId
+        workspace: ObjectId;
+    }
+
+    interface Cell {
+        user: ObjectId,
+        comb: ObjectId,
+        row: number;
+        column: number;
+    }
+
     interface ClientEvent<T = any> {
         token: string;
         action: ClientEventAction;
@@ -33,7 +46,7 @@ declare global {
     }
 
     type ClientEventAction = "join" | "host" | "collaborate";
-    type ServerEventAction = "joined" | "error";
+    type ServerEventAction = "joined" | "error" | "status";
 
 
 }

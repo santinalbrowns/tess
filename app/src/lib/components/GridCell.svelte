@@ -1,9 +1,9 @@
 <script lang="ts">
-	export let participant: Participant | undefined = undefined;
+	export let cell: Cell | undefined = undefined;
 	export let box: Box | undefined = undefined;
 </script>
 
-{#if participant}
+{#if cell}
 	<div class="cell flex justify-center items-center relative">
 		{#if box}
 			<!--  left: -10px; top: -10px; margin-left: -1.25px; margin-top: -1.5px; -->
@@ -11,9 +11,9 @@
 				class="bg-sky-500 group/edit bg-opacity-20 absolute rounded-3xl"
 				style="width: {box.width}px; height: {box.height}px; z-index: 1; left: {box.left}px; top: {box.top}px;"
 			>
-				{#if participant.host.label}
+				{#if cell.comb.label}
 					<div class="absolute -top-7 left-1 bg-sky-500 text-xs px-3 py-1 rounded-lg text-white">
-						{participant.host.label}
+						{cell.comb.label}
 					</div>
 				{/if}
 			</div>
@@ -21,7 +21,7 @@
 
 		<div
 			class="absolute h-12 w-12 rounded-full"
-			style="z-index: 99; background-color: {participant.user.color};"
+			style="z-index: 99; background-color: {cell.user.color};"
 		/>
 	</div>
 {:else}

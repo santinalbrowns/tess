@@ -7,6 +7,7 @@ import jwt from "./helpers/jwt";
 import Auth from "./services/auth";
 import { object, string, InferType, ValidationError } from 'yup';
 import Workspace from "./services/workspace";
+import Comb from "./services/comb";
 
 dotenv.config();
 
@@ -282,24 +283,49 @@ app.ws('/ws', {
     message: async (ws, message, isBinary) => {
 
         let event: ClientEvent = JSON.parse(decoder.decode(message));
+        let body: ServerEvent;
 
         try {
             const user = await auth.user(event.token);
+
+            const honeyComb = new Comb();
 
             switch (event.action) {
                 case "collaborate":
 
                     ws.subscribe(event.data);
 
+                    body = {
+                        action: 'status',
+                        data: {
+                            cells: await honeyComb.cells(event.data),
+                        }
+                    };
+
+                    
+                    ws.send(JSON.stringify(body));
+
                     break;
                 case "host":
 
-                    const data: ServerEvent = {
+                    const comb = await honeyComb.create({
+                        user: user.id,
+                        workspace: event.data.topic,
+                    });
+
+                    const cell = await honeyComb.join({
+                        combId: comb.id,
+                        row: event.data.row,
+                        column: event.data.column,
+                        userId: user.id
+                    });
+
+                    let data: ServerEvent = {
                         action: 'joined',
-                        data: {}
+                        data: cell
                     }
 
-                    //TODO: Send to everyone connected to the workspace
+                    ws.publish(event.data.topic, JSON.stringify(data));
 
                     ws.send(JSON.stringify(data));
 

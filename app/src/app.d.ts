@@ -20,24 +20,19 @@ declare global {
 		left: number
 	}
 
-	interface Cell {
-		row: number;
-		column: number;
-	}
+	interface Comb {
+		id: string;
+        label?: string;
+        user: ObjectId
+    }
 
-	interface Participant {
-		id: string
-		user: User,
-		host: {
-			id: string;
-			label?: string;
-			user: User;
-		},
-		cell: {
-			row: number;
-			column: number;
-		};
-	}
+    interface Cell {
+		id: string;
+        user: User,
+        comb: Comb,
+        row: number;
+        column: number;
+    }
 
 	interface User {
 		id: string;
@@ -71,7 +66,7 @@ declare global {
     }
 
 	type ClientEventAction = "join" | "host" | "collaborate";
-    type ServerEventAction = "joined" | "error";
+    type ServerEventAction = "joined" | "error" | "status";
 }
 
 export { };

@@ -3,7 +3,7 @@
 	import type { LayoutData } from './$types';
 	//import { socket } from '$lib/socket';
 
-	export let data: LayoutData;
+	//export let data: LayoutData;
 </script>
 
 <slot />
