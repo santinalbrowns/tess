@@ -10,24 +10,6 @@
 
 	user.set(data.user);
 
-	const getRooms = () => {
-		const groups: Record<string, Cell[]> = {};
-
-		$cells.forEach((cell) => {
-			const { comb } = cell;
-
-			if (!groups[comb.id]) {
-				groups[comb.id] = [];
-			}
-			groups[comb.id].push(cell);
-		});
-
-		return Object.entries(groups).map(([id, cells]) => ({
-			id,
-			cells
-		}));
-	};
-
 	onMount(() => {
 		ws.onopen = (e) => {
 			const message: ClientEventMessage = {
@@ -69,12 +51,7 @@
 					break;
 			}
 		};
-
-		ws.close = (w) => {
-			
-		}
 	});
-
 
 </script>
 
