@@ -31,6 +31,20 @@
 
 		$socket.send(JSON.stringify(message));
 	};
+
+	const onLeave = (e: CustomEvent<{id: string}>) => {
+
+		const message: ClientEventMessage = {
+			action: "leave",
+			token: data.token,
+			data: {
+				id: e.detail.id,
+				topic: data.workspace.id
+			}
+		}
+
+		$socket.send(JSON.stringify(message));
+	}
 </script>
 
-<Grid on:join={onJoin} />
+<Grid on:join={onJoin} on:leave={onLeave} />

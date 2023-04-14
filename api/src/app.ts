@@ -414,6 +414,17 @@ app.ws('/ws', {
 
                     ws.send(JSON.stringify(body));
                     break;
+                case "leave":
+                    body = {
+                        action: 'left',
+                        data: await honeyComb.remove(event.data.id)
+                    }
+
+                    ws.publish(event.data.topic, JSON.stringify(body));
+
+                    ws.send(JSON.stringify(body));
+
+                    break;
 
                 default:
                     break;
@@ -431,7 +442,7 @@ app.ws('/ws', {
     },
 
     close(ws, code, message) {
-        //console.log("user disconnected", code.toString())
+        console.log("user disconnected", code.toString())
     },
 })
 

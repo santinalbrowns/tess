@@ -44,11 +44,28 @@ class Comb {
 
     async remove(id: ObjectId) {
 
-        const cell = await cells.findById(id);
+        const member = await cells.findById(id);
 
-        if (!cell) throw new Error("Cell not found");
+        if (member) {
 
-        await cells.deleteOne({ _id: cell.id });
+            const comb = await combs.findOne({ user: member.user });
+
+            if (comb) {
+
+                const members = await cells.find({ comb: comb.id });
+
+                if (members.length && members.length < 2) {
+                    await combs.deleteOne({ user: member.user });
+                }
+
+            }
+            
+            await cells.deleteOne({ _id: member.id })
+
+            return {
+                id: member.id
+            };
+        }
     }
 
     async join({ combId, row, column, userId }: { combId: string, row: number, column: number, userId: ObjectId }) {
@@ -68,7 +85,7 @@ class Comb {
                 }
 
             }
-            
+
             await cells.deleteOne({ user: member.user })
 
         }
@@ -97,6 +114,7 @@ class Comb {
         return cell.map((cell: any) => {
 
             return {
+                id: cell.id,
                 comb: {
                     id: cell.comb.id,
                     user: cell.comb.user,

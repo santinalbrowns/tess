@@ -1,6 +1,73 @@
 <script lang="ts">
+	import { cells } from '$lib/store';
+
 	export let cell: Cell | undefined = undefined;
-	export let box: Box | undefined = undefined;
+	let box: Box | undefined = undefined;
+
+	const rooms = () => {
+		const groups: Record<string, Cell[]> = {};
+
+		$cells.forEach((cell) => {
+			const { comb } = cell;
+
+			if (!groups[comb.id]) {
+				groups[comb.id] = [];
+			}
+			groups[comb.id].push(cell);
+		});
+
+		return Object.entries(groups).map(([id, cells]) => ({
+			id,
+			cells
+		}));
+	};
+
+	cells.subscribe((ce) => {
+		
+		if (cell) {
+			const row = cell.row;
+			const column = cell.column;
+
+			const pa = $cells.find((c) => c.id === cell?.id);
+
+			if (pa) {
+				const roo = rooms();
+
+				const room = roo.find((r) => r.id === pa.comb.id);
+
+				if (room) {
+					const item_cells = room.cells.map((p) => {
+						return {
+							row: p.row,
+							column: p.column
+						};
+					});
+
+					const first = item_cells.reduce((acc, cur) => {
+						if (cur.row < acc.row || (cur.row === acc.row && cur.column < acc.column)) {
+							return cur;
+						} else {
+							return acc;
+						}
+					});
+
+					if (first.row === row && first.column === column) {
+						const rows = Array.from(new Set(item_cells.map((obj) => obj.row)));
+						const columns = Array.from(new Set(item_cells.map((obj) => obj.column)));
+
+						const w = 56 * columns.length + (2.5 * columns.length - 2.5) + 28;
+
+						box = {
+							width: w,
+							height: 50.5 * rows.length + 13.5 + 20,
+							top: -10,
+							left: -14
+						};
+					}
+				}
+			}
+		}
+	});
 </script>
 
 {#if cell}
@@ -45,6 +112,6 @@
 		width: 100%;
 		height: 100%;
 		clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
-		@apply bg-white;
+		@apply bg-white dark:bg-gray-900;
 	}
 </style>

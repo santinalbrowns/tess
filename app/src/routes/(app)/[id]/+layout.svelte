@@ -10,6 +10,24 @@
 
 	user.set(data.user);
 
+	const getRooms = () => {
+		const groups: Record<string, Cell[]> = {};
+
+		$cells.forEach((cell) => {
+			const { comb } = cell;
+
+			if (!groups[comb.id]) {
+				groups[comb.id] = [];
+			}
+			groups[comb.id].push(cell);
+		});
+
+		return Object.entries(groups).map(([id, cells]) => ({
+			id,
+			cells
+		}));
+	};
+
 	onMount(() => {
 		ws.onopen = (e) => {
 			const message: ClientEventMessage = {
@@ -32,14 +50,17 @@
 					break;
 
 				case 'joined':
+					cells.update((cell) => {
+						const mm = cell.filter((part) => part.user.id !== message.data.user.id);
 
-                    cells.update(cell => {
+						return [...mm, message.data];
+					});
 
-                        const mm = cell.filter((part) => part.user.id !== message.data.user.id);
-
-                        return [...mm, message.data]
-                    })
-
+					break;
+				case 'left':
+					cells.update((cell) => {
+						return cell.filter((part) => part.id !== message.data.id);
+					});
 					break;
 				case 'error':
 					console.log(message.data);
@@ -48,9 +69,13 @@
 					break;
 			}
 		};
+
+		ws.close = (w) => {
+			
+		}
 	});
 
-	//socket.set(ws);
+
 </script>
 
 <slot />

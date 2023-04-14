@@ -65,8 +65,8 @@ declare global {
         data: T;
     }
 
-	type ClientEventAction = "join" | "host" | "collaborate";
-    type ServerEventAction = "joined" | "error" | "status";
+	type ClientEventAction = "join" | "host" | "leave" | "collaborate";
+    type ServerEventAction = "joined" | "error" | "status" | "left";
 }
 
 export { };
