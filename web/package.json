@@ -36,7 +36,11 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@felte/reporter-dom": "^1.1.5",
+		"@felte/validator-yup": "^1.0.11",
+		"felte": "^1.2.7",
 		"material-symbols": "^0.5.5",
-		"tippy.js": "^6.3.7"
+		"tippy.js": "^6.3.7",
+		"yup": "^0.32.11"
 	}
 }
