@@ -170,8 +170,9 @@
 <section class="hive relative">
 	<div
 		id="het"
-		class="overflow-hidden box-border h-full w-full overflow-x-auto overflow-y-auto flex flex-col flex-1 justify-center items-center"
+		class="box-border h-full w-full overflow-x-auto overflow-y-auto flex flex-col flex-1 justify-center items-center"
 	>
+	<!-- style="margin-left: -55.5px; margin-top: -56px;" -->
 		<div class="max-w-full max-h-full" style="margin-left: -55.5px; margin-top: -56px;">
 			{#each Array.from({ length: size }) as index, row}
 				<div
@@ -241,7 +242,8 @@
 
 <style lang="postcss">
 	.hive {
-		@apply bg-gray-100 dark:bg-gray-800 flex-col relative  h-screen flex justify-center items-center;
+		height: calc(100vh - 56px);
+		@apply bg-gray-100 bg-opacity-60 dark:bg-gray-800 flex-col relative flex justify-center items-center;
 	}
 	.row {
 		display: grid;

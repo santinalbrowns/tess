@@ -23,7 +23,6 @@
 	};
 
 	cells.subscribe((ce) => {
-		
 		if (cell) {
 			const row = cell.row;
 			const column = cell.column;
@@ -73,7 +72,6 @@
 {#if cell}
 	<div class="cell flex justify-center items-center relative">
 		{#if box}
-			<!--  left: -10px; top: -10px; margin-left: -1.25px; margin-top: -1.5px; -->
 			<div
 				class="bg-sky-500 group/edit bg-opacity-20 absolute rounded-3xl"
 				style="width: {box.width}px; height: {box.height}px; z-index: 1; left: {box.left}px; top: {box.top}px;"
@@ -87,16 +85,18 @@
 		{/if}
 
 		<div
-			class="absolute h-12 w-12 rounded-full"
+			class="absolute h-12 w-12 rounded-full flex justify-center items-center"
 			style="z-index: 99; background-color: {cell.user.color};"
-		/>
+		>
+			<span class="text-white">{cell.user.email.charAt(0).toLocaleUpperCase()}</span>
+		</div>
 	</div>
 {:else}
 	<div class="cell flex group/item justify-center items-center relative">
 		<button
 			on:click
 			class="absolute opacity-0 group/edit group-hover/item:opacity-100 h-12 w-12 bg-sky-500 bg-opacity-50 border-2 border-sky-500 rounded-full transition-opacity duration-500"
-			style="z-index: 99;"
+			style="z-index: 10;"
 		/>
 	</div>
 {/if}

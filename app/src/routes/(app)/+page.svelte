@@ -14,5 +14,3 @@
 		</a>
 	{/each}
 </div>
-
-<a href="/data">hello</a>

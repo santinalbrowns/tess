@@ -7,16 +7,20 @@
     "distDir": "../build"
   },
   "package": {
-    "productName": "Tess",
+    "productName": "Hive",
     "version": "0.1.0"
   },
   "tauri": {
     "allowlist": {
       "all": false,
+      "window": {
+        "all": false,
+        "startDragging": true
+      },
       "http": {
         "all": false,
         "request": true,
-        "scope": ["http://localhost:5000/*"]
+        "scope": ["http://localhost:5000/*", "http://localhost:443/*"]
       }
     },
     "bundle": {
@@ -34,7 +38,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.quick.beehive",
+      "identifier": "com.quick.hive",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
@@ -63,7 +67,7 @@
         "fullscreen": false,
         "height": 600,
         "resizable": true,
-        "title": "Tess",
+        "title": "Hive",
         "width": 800
       }
     ]

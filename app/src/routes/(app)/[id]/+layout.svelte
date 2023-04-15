@@ -3,12 +3,50 @@
 	import { onMount } from 'svelte';
 	import type { LayoutData } from './$types';
 	import websocket from '$lib/socket';
+	import Sidebar from '$lib/components/sidebar.svelte';
 
 	export let data: LayoutData;
 
 	const ws = websocket(data.workspace.id, data.token);
 
 	user.set(data.user);
+
+	const tree: Array<Project> = [
+		{
+			id: '1',
+			color: '#ff9300',
+			name: 'Get started',
+			pages: [
+				{
+					id: '1',
+					name: 'Florida',
+					type: 'tasks'
+				},
+				{
+					id: '2',
+					name: 'California',
+					type: 'tasks'
+				}
+			]
+		},
+		{
+			id: '1',
+			color: '#009193',
+			name: 'Tutorial noted',
+			pages: [
+				{
+					id: '1',
+					name: 'Florida',
+					type: 'tasks'
+				},
+				{
+					id: '2',
+					name: 'California',
+					type: 'tasks'
+				}
+			]
+		},
+	];
 
 	onMount(() => {
 		ws.onopen = (e) => {
@@ -52,7 +90,10 @@
 			}
 		};
 	});
-
 </script>
 
-<slot />
+<Sidebar projects={tree} />
+
+<main class="ml-72">
+	<slot />
+</main>

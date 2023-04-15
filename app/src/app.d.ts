@@ -47,6 +47,21 @@ declare global {
         color: string;
     }
 
+    interface Project {
+        id: string;
+        name: string;
+        color: string;
+        pages?: Array<Task>;
+    }
+
+    interface Page {
+        id: string;
+        type: PageType;
+        name: string;
+    }
+
+    type PageType = "tasks";
+
     interface Member {
 		id: string;
         user: ObjectId;

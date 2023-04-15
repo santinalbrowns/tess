@@ -3,5 +3,6 @@
 @tailwind utilities;
 
 :root {
+    overflow: hidden;
     @apply bg-white dark:bg-gray-900;
 }

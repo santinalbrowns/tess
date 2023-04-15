@@ -76,11 +76,11 @@ app.post('/auth', (res, req) => {
 
             const user = await auth.authenticate(body.email, body.password);
 
-            /* res.writeHeader('Access-Control-Allow-Origin', 'origin');
+            /* res.writeHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
             res.writeHeader('Access-Control-Allow-Credentials', 'true'); */
-            res.writeHeader('Set-Cookie', 'myCookie=cookieValue; Max-Age=3600; HttpOnly');
+            //res.writeHeader('Set-Cookie', 'myCookie=cookieValue; Max-Age=3600; HttpOnly');
 
-            //res.writeHeader('content-type', 'application/json');
+            res.writeHeader('content-type', 'application/json');
 
             res.end(JSON.stringify(user));
 
@@ -193,12 +193,6 @@ app.get('/workspaces/:id', async (res, req) => {
 app.get('/workspaces', async (res, req) => {
 
     const header = req.getHeader("authorization");
-
-    res.writeHeader('Set-Cookie', 'myCookie=cookieValue; Max-Age=3600; HttpOnly');
-
-    req.forEach((k, v) => {
-        console.log(k, v)
-    })
 
     res.onAborted(() => {
         res.aborted = true;
@@ -337,7 +331,7 @@ app.get('/join/:id', async (res, req) => {
         res.end(error.message);
     }
 });
-app.get('/api/data', (res, req) => {
+/* app.get('/api/data', (res, req) => {
     // Set the "Set-Cookie" header in the response
     //res.writeHeader('Access-Control-Allow-Credentials', 'true');
     res.writeHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
@@ -346,7 +340,7 @@ app.get('/api/data', (res, req) => {
     // Send the response
     res.writeStatus('200 OK');
     res.end(JSON.stringify({message: 'Hello, world!'}));
-});
+}); */
 
 app.ws('/*', {
     compression: 0,
@@ -355,9 +349,9 @@ app.ws('/*', {
 
     upgrade: (res, req, context) => {
 
-        console.log('An Http connection wants to become WebSocket, URL: ' + req.getUrl() + '!');
+        //console.log('An Http connection wants to become WebSocket, URL: ' + req.getUrl() + '!');
 
-        console.log(cookie.parse(req.getHeader('cookie') || ''));
+        //console.log(cookie.parse(req.getHeader('cookie') || ''));
 
         res.upgrade({
             myData: "1234"
@@ -473,7 +467,7 @@ app.ws('/*', {
     },
 
     close(ws, code, message) {
-        console.log("user disconnected", code.toString())
+        //console.log("user disconnected", code.toString())
     },
 })
 
