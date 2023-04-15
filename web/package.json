@@ -36,6 +36,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"material-symbols": "^0.5.5",
 		"tippy.js": "^6.3.7"
 	}
 }
