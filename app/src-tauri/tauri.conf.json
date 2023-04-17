@@ -21,7 +21,15 @@
         "all": false,
         "request": true,
         "scope": ["http://localhost:5000/*", "http://localhost:443/*"]
-      }
+      },
+      "dialog": {
+        "all": false,
+        "ask": true,
+        "confirm": true,
+        "message": true,
+        "open": false,
+        "save": false
+      } 
     },
     "bundle": {
       "active": true,

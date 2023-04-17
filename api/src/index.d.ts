@@ -25,6 +25,7 @@ declare global {
         label?: string;
         user: ObjectId
         workspace: ObjectId;
+        peer: string;
     }
 
     interface Cell {
@@ -46,7 +47,7 @@ declare global {
     }
 
     type ClientEventAction = "join" | "host" | "leave" | "collaborate";
-    type ServerEventAction = "joined" | "error" | "status" | "left";
+    type ServerEventAction = "joined" | "error" | "status" | "left" | "comb-joined" | "comb-left";
 
 
 }

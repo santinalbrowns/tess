@@ -4,18 +4,20 @@ import combs from "../models/comb";
 import users from "../models/user";
 
 class Comb {
-    async create({ user, label, workspace }: { user: ObjectId, label?: string, workspace: ObjectId }) {
+    async create({ user, label, workspace, peer }: { user: ObjectId, label?: string, workspace: ObjectId, peer: string }) {
 
         const comb = await combs.create({
             user: user,
             label: label,
             workspace: workspace,
+            peer: peer
         });
 
         return {
             id: comb.id,
             user: comb.user,
-            label: comb.label
+            label: comb.label,
+            peer: comb.peer,
         }
     }
 
@@ -35,7 +37,8 @@ class Comb {
             comb: {
                 id: cell.comb.id,
                 user: cell.comb.user,
-                label: cell.comb.label
+                label: cell.comb.label,
+                peer: cell.comb.peer,
             },
             row: cell.row,
             column: cell.column,
@@ -58,8 +61,15 @@ class Comb {
                     await combs.deleteOne({ user: member.user });
                 }
 
+                await cells.deleteOne({ _id: member.id })
+
+                return {
+                    id: member.id,
+                    peer: comb.peer
+                };
+
             }
-            
+
             await cells.deleteOne({ _id: member.id })
 
             return {
@@ -68,13 +78,13 @@ class Comb {
         }
     }
 
-    async join({ combId, row, column, userId }: { combId: string, row: number, column: number, userId: ObjectId }) {
+    async join({ combId, row, column, userId, peer }: { combId: string, row: number, column: number, userId: ObjectId, peer: string }) {
 
         const member = await cells.findOne({ user: userId });
 
         if (member) {
 
-            const comb = await combs.findOne({ user: member.user });
+            const comb = await combs.findOne({ user: member.user, peer: peer });
 
             if (comb) {
 
@@ -119,6 +129,7 @@ class Comb {
                     id: cell.comb.id,
                     user: cell.comb.user,
                     label: cell.comb.label,
+                    peer: cell.comb.peer,
                 },
                 user: {
                     id: cell.user.id,

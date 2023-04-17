@@ -404,13 +404,15 @@ app.ws('/*', {
                     const comb = await honeyComb.create({
                         user: user.id,
                         workspace: event.data.topic,
+                        peer: event.data.peer,
                     });
 
                     const cell = await honeyComb.join({
                         combId: comb.id,
                         row: event.data.row,
                         column: event.data.column,
-                        userId: user.id
+                        userId: user.id,
+                        peer: event.data.peer,
                     });
 
                     let data: ServerEvent = {
@@ -418,6 +420,9 @@ app.ws('/*', {
                         data: cell,
                     }
 
+
+                    ws.subscribe(comb.id);
+                    
                     ws.publish(event.data.topic, JSON.stringify(data));
 
                     ws.send(JSON.stringify(data));
@@ -431,9 +436,17 @@ app.ws('/*', {
                             combId: event.data.comb,
                             row: event.data.row,
                             column: event.data.column,
-                            userId: user.id
+                            userId: user.id,
+                            peer: event.data.peer,
                         })
                     }
+
+                    let mm: ServerEvent = {
+                        action: 'comb-joined',
+                        data: body.data.comb.id,
+                    }
+
+                    ws.publish(body.data.comb.id, JSON.stringify(mm));
 
                     ws.publish(event.data.topic, JSON.stringify(body));
 

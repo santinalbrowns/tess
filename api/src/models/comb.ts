@@ -4,7 +4,8 @@ const schema = new mongoose.Schema<Comb>(
     {
         label: { type: String },
         user: { type: mongoose.Types.ObjectId, ref: 'user', required: true },
-        workspace: { type: mongoose.Types.ObjectId, ref: 'workspace', required: true }
+        workspace: { type: mongoose.Types.ObjectId, ref: 'workspace', required: true },
+        peer: { type: String, required: true }
     },
     { timestamps: true }
 )

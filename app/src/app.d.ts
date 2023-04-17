@@ -23,7 +23,8 @@ declare global {
 	interface Comb {
 		id: string;
         label?: string;
-        user: ObjectId
+        user: ObjectId,
+        peer: string
     }
 
     interface Cell {
@@ -80,8 +81,13 @@ declare global {
         data: T;
     }
 
+    interface AudioInput {
+        id: string;
+        name: string;
+    }
+
 	type ClientEventAction = "join" | "host" | "leave" | "collaborate";
-    type ServerEventAction = "joined" | "error" | "status" | "left";
+    type ServerEventAction = "joined" | "error" | "status" | "left" | "comb-joined" | "comb-left";
 }
 
 export { };

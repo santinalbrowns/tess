@@ -4,3 +4,5 @@
 	import 'tippy.js/themes/light.css';
     import 'material-symbols';
 </script>
+
+<slot/>

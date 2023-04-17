@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { cells, user } from '$lib/store';
 	import GridCell from './GridCell.svelte';
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
 
 	export let size: number = 20;
 
@@ -65,11 +65,10 @@
 
 			//even(columns[columns.length - 1]) ? w - 28 - 2.5 :
 
-
-			const cms = item_cells.filter(d => even(d.row));
+			const cms = item_cells.filter((d) => even(d.row));
 
 			console.log(cms);
-			
+
 			const box = {
 				width: w,
 				height: 50.5 * rows.length + 13.5 + 20,
@@ -147,14 +146,19 @@
 
 				if (linker) {
 					if (linker.user.id !== $user.id) {
-						dispatch('join', { comb: linker.comb.id, row: row, column: column });
+						dispatch('join', {
+							comb: linker.comb.id,
+							row: row,
+							column: column,
+							peer: linker.comb.peer
+						});
 					} else {
-						dispatch('join', { comb: undefined, row: row, column: column });
+						dispatch('join', { comb: undefined, row: row, column: column, peer: '' });
 					}
 				}
 			}
 		} else {
-			dispatch('join', { comb: undefined, row: row, column: column });
+			dispatch('join', { comb: undefined, row: row, column: column, peer: '' });
 		}
 	};
 
@@ -165,6 +169,8 @@
 			dispatch('leave', { id: participant.id });
 		}
 	}
+
+	onMount(() => {});
 </script>
 
 <section class="hive relative">
@@ -172,7 +178,7 @@
 		id="het"
 		class="box-border h-full w-full overflow-x-auto overflow-y-auto flex flex-col flex-1 justify-center items-center"
 	>
-	<!-- style="margin-left: -55.5px; margin-top: -56px;" -->
+		<!-- style="margin-left: -55.5px; margin-top: -56px;" -->
 		<div class="max-w-full max-h-full" style="margin-left: -55.5px; margin-top: -56px;">
 			{#each Array.from({ length: size }) as index, row}
 				<div
@@ -186,7 +192,6 @@
 							<GridCell
 								cell={$cells.find((cell) => cell.row === row && cell.column === column)}
 								on:click={() => click(row, column)}
-								
 							/>
 						</div>
 					{/each}
@@ -203,18 +208,11 @@
 					<div class="bg-blue-900 h-12 flex items-center bg-opacity-25 px-3 rounded-3xl">
 						<ul class="list-none flex space-x-3">
 							<!-- <li>
-								<button class="w-8 h-8 bg-gray-600 rounded-full flex justify-center items-center">
+								<button class="w-8 h-8 bg-gray-500 rounded-full flex justify-center items-center">
 									<span class="material-symbols-rounded !text-base text-gray-100"> mic </span>
 								</button>
 							</li> -->
-							<!-- <li>
-								<a
-									href="/chats"
-									class="w-8 h-8 bg-gray-600 rounded-full flex justify-center items-center"
-								>
-									<span class="material-symbols-rounded !text-base text-gray-100">chat</span>
-								</a>
-							</li> -->
+
 							<li>
 								<button
 									on:click={location}
@@ -242,8 +240,8 @@
 
 <style lang="postcss">
 	.hive {
-		height: calc(100vh - 56px);
-		@apply bg-gray-100 bg-opacity-60 dark:bg-gray-800 flex-col relative flex justify-center items-center;
+		//height: calc(100vh - 56px);
+		@apply bg-gray-100 bg-opacity-60 h-screen dark:bg-gray-800 flex-col relative flex justify-center items-center;
 	}
 	.row {
 		display: grid;
@@ -262,6 +260,6 @@
 	}
 
 	.material-symbols-rounded {
-		font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' -25, 'opsz' 48;
+		font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 200, 'opsz' 40;
 	}
 </style>

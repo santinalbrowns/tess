@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { cells, socket, user } from '$lib/store';
+	import { cells, peer, socket, user } from '$lib/store';
 	import { onMount } from 'svelte';
 	import type { LayoutData } from './$types';
 	import websocket from '$lib/socket';
@@ -82,6 +82,9 @@
 						return cell.filter((part) => part.id !== message.data.id);
 					});
 					break;
+				case 'comb-joined':
+					console.log('Comb joined')
+					break;
 				case 'error':
 					console.log(message.data);
 					break;
@@ -90,10 +93,12 @@
 			}
 		};
 	});
+
+	
 </script>
 
-<Sidebar projects={tree} />
+<!-- <Sidebar projects={tree} /> -->
 
-<main class="ml-72">
+<main> <!-- ml-72 -->
 	<slot />
 </main>
