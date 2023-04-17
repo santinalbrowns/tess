@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { cells, peer, socket, user } from '$lib/store';
+	import { cells, socket, user } from '$lib/store';
 	import { onMount } from 'svelte';
 	import type { LayoutData } from './$types';
 	import websocket from '$lib/socket';

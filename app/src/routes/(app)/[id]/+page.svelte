@@ -6,13 +6,21 @@
 	import Peer from 'peerjs';
 	import Appbar from '$lib/components/appbar.svelte';
 	import { page } from '$app/stores';
-	import { addAudioStream } from '$lib/media';
-
 	export let data: PageData;
 
-	const peer: Peer = new Peer();
-	const peers: any = {}
-	
+	const peer = new Peer();
+
+	/* My audio */
+	const me = document.createElement('audio');
+	me.muted = true;
+
+	const addAudioStream = (audioElement: HTMLAudioElement, mediaStream: MediaStream) => {
+		audioElement.srcObject = mediaStream;
+
+		audioElement.addEventListener('loadedmetadata', () => {
+			audioElement.play();
+		});
+	};
 
 	function connect(id: string, mediaStream: MediaStream) {
 		const call = peer.call(id, mediaStream);
@@ -28,7 +36,7 @@
 			audio.remove();
 		});
 
-		peers[id] = call;
+		//peers[id] = call;
 	}
 
 	peer.on('call', (call) => {
@@ -45,10 +53,12 @@
 		}
 	});
 
-	const onJoin = (e: CustomEvent<{ comb: any; row: number; column: number, peer: string }>) => {
+	const onJoin = (e: CustomEvent<{ comb: any; row: number; column: number; peer: string }>) => {
 		let message: ClientEventMessage;
 
 		populateDevices();
+
+		addAudioStream(me, $stream);
 
 		if (e.detail.comb) {
 			connect(e.detail.peer, $stream);
@@ -73,19 +83,10 @@
 			};
 		}
 
-		/* My audio */
-		const audio = document.createElement("audio");
-		audio.muted = false;
-
-		addAudioStream(audio, $stream);
-
 		$socket.send(JSON.stringify(message));
-
 	};
 
 	const onLeave = (e: CustomEvent<{ id: string }>) => {
-		
-
 		const message: ClientEventMessage = {
 			action: 'leave',
 			token: data.token,
@@ -111,10 +112,12 @@
 	}
 
 	async function getUserMedia() {
-		stream.set(await navigator.mediaDevices.getUserMedia({
-			audio: true,
-			video: false
-		}));
+		stream.set(
+			await navigator.mediaDevices.getUserMedia({
+				audio: true,
+				video: false
+			})
+		);
 
 		$stream.getTracks().forEach((track) => {
 			track.onended = () => {
@@ -150,14 +153,13 @@
 						devs
 							.filter((d) => d.kind === 'audioinput')
 							.forEach((dev) => {
-
 								const device: AudioInput = {
 									id: dev.deviceId,
 									name: dev.label
 								};
 
-								inputs.update(input => {
-									return [...input, device]
+								inputs.update((input) => {
+									return [...input, device];
 								});
 
 								const d = document.createElement('option');
@@ -175,16 +177,18 @@
 	}
 
 	onMount(() => {
-		populateDevices();
+		//populateDevices();
 	});
 </script>
 
 <section class="overflow-hidden">
-	<!-- <Appbar>
-		<div class="flex items-center space-x-4">
-			<select id="device-list" />
-		</div>
-	</Appbar> -->
+	<div class="invisible">
+		<Appbar>
+			<div class="flex items-center space-x-4 invisible">
+				<select id="device-list" />
+			</div>
+		</Appbar>
+	</div>
 	<div class="w-full">
 		<Grid on:join={onJoin} on:leave={onLeave} />
 	</div>

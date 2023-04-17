@@ -8,8 +8,6 @@
 	<div class="max-w-2xl m-auto space-y-5">
 		<div class="pt-10 flex">
 			<div class="">Workspaces</div>
-
-			<a href="/add" class="flex bg-blue-500"><span class="material-symbols-rounded">add</span></a>
 		</div>
 		<div class="grid grid-cols-3 gap-4">
 			{#each data.workspaces as workspace}
@@ -18,34 +16,6 @@
 						<div class="">{workspace.name}</div>
 					</div>
 					<div class="h-1" style="background-color: {workspace.color};"></div>
-				</a>
-			{/each}
-			{#each data.workspaces as workspace}
-				<a href="/{workspace.id}" class="p-4" style="background-color: {workspace.color};">
-					<div class="">
-						<div class="">{workspace.name}</div>
-					</div>
-				</a>
-			{/each}
-			{#each data.workspaces as workspace}
-				<a href="/{workspace.id}" class="p-4" style="background-color: {workspace.color};">
-					<div class="">
-						<div class="">{workspace.name}</div>
-					</div>
-				</a>
-			{/each}
-			{#each data.workspaces as workspace}
-				<a href="/{workspace.id}" class="p-4" style="background-color: {workspace.color};">
-					<div class="">
-						<div class="">{workspace.name}</div>
-					</div>
-				</a>
-			{/each}
-			{#each data.workspaces as workspace}
-				<a href="/{workspace.id}" class="p-4" style="background-color: {workspace.color};">
-					<div class="">
-						<div class="">{workspace.name}</div>
-					</div>
 				</a>
 			{/each}
 		</div>

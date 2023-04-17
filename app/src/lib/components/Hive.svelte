@@ -240,8 +240,8 @@
 
 <style lang="postcss">
 	.hive {
-		//height: calc(100vh - 56px);
-		@apply bg-gray-100 bg-opacity-60 h-screen dark:bg-gray-800 flex-col relative flex justify-center items-center;
+		height: calc(100vh - 56px);
+		@apply bg-gray-100 bg-opacity-60 dark:bg-gray-800 flex-col relative flex justify-center items-center;
 	}
 	.row {
 		display: grid;
