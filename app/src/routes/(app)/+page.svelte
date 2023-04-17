@@ -9,7 +9,7 @@
 		<div class="pt-10 flex">
 			<div class="">Workspaces</div>
 
-			<a href="/add" class="flex"><span class="material-symbols-rounded">add</span></a>
+			<a href="/add" class="flex bg-blue-500"><span class="material-symbols-rounded">add</span></a>
 		</div>
 		<div class="grid grid-cols-3 gap-4">
 			{#each data.workspaces as workspace}
